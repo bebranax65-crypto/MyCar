@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Пополнение баланса";
+}
+
+<div class="container py-4">
+    <div class="row">
+        <!-- Боковое меню пользователя -->
+        <div class="col-md-3">
+            <div class="list-group shadow-sm">
+                <a href="/Account/Profile" class="list-group-item list-group-item-action">
+                    <i class="fas fa-user me-2"></i> Личный кабинет
+                </a>
+                <a href="/Account/MyBookings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-history me-2"></i> Мои поездки
+                </a>
+                <a href="/Account/ChangePassword" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key me-2"></i> Сменить пароль
+                </a>
+                <a href="/Account/AddFunds" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-plus-circle me-2"></i> Пополнить баланс
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выйти
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Пополнение баланса</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Success != null)
+                    {
+                        <div class="alert alert-success">@ViewBag.Success</div>
+                    }
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-warning">@ViewBag.Error</div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="bg-light p-4 rounded text-center mb-4">
+                                <h6>Текущий баланс</h6>
+                                <h3 class="text-primary">@ViewBag.CurrentBalance BYN</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" action="/Account/AddFunds">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Сумма пополнения (BYN)</label>
+                                <input type="number" name="amount" class="form-control" min="1" step="0.01" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Способ оплаты</label>
+                                <select name="paymentMethod" class="form-select">
+                                    <option value="card">Банковская карта</option>
+                                    <option value="erip">ЕРИП</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label"><i class="fas fa-gift text-warning me-1"></i> Промокод (если есть)</label>
+                                <input type="text" name="promoCode" class="form-control" placeholder="Введите промокод">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-credit-card me-2"></i>Оплатить
+                                </button>
+                                <a href="/Account/Profile" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Отмена
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <h6>Часто пополняемые суммы</h6>
+                    <div class="row">
+                        <div class="col-md-2 col-4 mb-2">
+                            <button class="btn btn-outline-primary w-100" onclick="setAmount(10)">10 BYN</button>
+                        </div>
+                        <div class="col-md-2 col-4 mb-2">
+                            <button class="btn btn-outline-primary w-100" onclick="setAmount(20)">20 BYN</button>
+                        </div>
+                        <div class="col-md-2 col-4 mb-2">
+                            <button class="btn btn-outline-primary w-100" onclick="setAmount(50)">50 BYN</button>
+                        </div>
+                        <div class="col-md-2 col-4 mb-2">
+                            <button class="btn btn-outline-primary w-100" onclick="setAmount(100)">100 BYN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setAmount(amount) {
+        document.querySelector('input[name="amount"]').value = amount;
+    }
+</script>
+
+

@@ -1,0 +1,561 @@
+@model IEnumerable<CarSharingWebsite.Models.Car>
+@{
+    ViewData["Title"] = "Автомобили";
+}
+
+<!-- Hero секция для страницы автомобилей -->
+<section class="cars-hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="cars-hero-title">Выберите свой автомобиль</h1>
+                <p class="cars-hero-subtitle">Более 10 автомобилей в Минске. Поминтуная аренда, бензин включен.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">10+</div>
+                        <div class="stat-label">Автомобилей</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5 мин</div>
+                        <div class="stat-label">Среднее время подачи</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Поддержка</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Основной контент -->
+<section class="cars-section">
+    <div class="container">
+        <!-- Панель фильтрации (упрощенная) -->
+        <div class="filter-panel">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="filter-group">
+                        <div class="filter-select">
+                            <select class="form-select" id="brandFilter">
+                                <option value="">Все марки</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Audi">Audi</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes">Mercedes</option>
+                                <option value="Renault">Renault</option>
+                                <option value="Skoda">Skoda</option>
+                                <option value="Ford">Ford</option>
+                            </select>
+                        </div>
+                        <div class="filter-select">
+                            <select class="form-select" id="conditionFilter">
+                                <option value="">Любая КПП</option>
+                                <option value="Автомат">Автомат</option>
+                                <option value="Механика">Механика</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="filter-actions">
+                        <button class="btn-filter-apply" onclick="applyFilters()">
+                            <i class="fas fa-search me-2"></i>Применить фильтры
+                        </button>
+                        <button class="btn-filter-reset" onclick="resetFilters()">
+                            <i class="fas fa-redo-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Результаты поиска -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="results-header">
+                    <h3>Доступные автомобили <span class="results-count" id="carsCount">@Model.Count()</span></h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Сетка автомобилей -->
+        <div class="row" id="carsGrid">
+            @foreach (var car in Model)
+            {
+                <div class="col-lg-4 col-md-6 car-item"
+                     data-brand="@car.Brand"
+                     data-condition=""Автомат"">
+                    <div class="car-card-modern">
+                        <div class="car-card-badge">
+                            @if (car.ID_Car < 0.25m)
+                            {
+                                <span class="badge-economy">Эконом</span>
+                            }
+                            else if (car.ID_Car < 0.35m)
+                            {
+                                <span class="badge-comfort">Комфорт</span>
+                            }
+                            else
+                            {
+                                <span class="badge-premium">Премиум</span>
+                            }
+                        </div>
+                        <div class="car-card-image">
+                            <img src="@(string.IsNullOrEmpty(car.PhotoUrl) ? "/img/default_car.jpg" : car.PhotoUrl)" alt="@car.Brand @car.Model">
+                        </div>
+                        <div class="car-card-content">
+                            <h4 class="car-card-title">@car.Brand @car.Model</h4>
+
+                            <!-- Характеристики под картинкой -->
+                            <div class="car-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-cog"></i>
+                                    <span>"Автомат"</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span>@(car.condition ?? "Бензин")</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-chair"></i>
+                                    <span>5 мест</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-car-side"></i>
+                                    <span>Седан</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-snowflake"></i>
+                                    <span>Кондиционер</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bluetooth"></i>
+                                    <span>Bluetooth</span>
+                                </div>
+                            </div>
+
+                            <div class="car-card-footer">
+                                <div class="car-card-price">
+                                    <span class="price-value">@(car.Tariffs?.FirstOrDefault()?.price_per_minute?.ToString("F2") ?? "0.00") BYN</span>
+                                    <span class="price-period">/мин</span>
+                                </div>
+                                <div class="car-card-actions">
+                                    <a href="/Home/CarDetails/@car.ID_Car" class="btn-select-car">
+                                        <span>Выбрать</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Hero секция */
+    .cars-hero-section {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        color: white;
+        padding: 100px 0;
+        margin-top: -76px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cars-hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        font-family: 'Orbitron', sans-serif;
+        margin-bottom: 20px;
+        animation: fadeInLeft 1s ease-out;
+    }
+
+    .cars-hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 30px;
+        animation: fadeInLeft 1s ease-out 0.2s both;
+    }
+
+    /* Статистика */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        animation: fadeInRight 1s ease-out;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 25px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: transform 0.3s;
+    }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.2);
+        }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #00D2D3;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    /* Панель фильтрации */
+    .filter-panel {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        transform: translateY(-50px);
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .filter-select {
+        flex: 1;
+        min-width: 200px;
+    }
+
+        .filter-select .form-select {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+            .filter-select .form-select:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+    }
+
+    .btn-filter-apply {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s;
+        white-space: nowrap;
+    }
+
+        .btn-filter-apply:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+    .btn-filter-reset {
+        width: 45px;
+        height: 45px;
+        border: 2px solid #f0f0f0;
+        border-radius: 12px;
+        background: white;
+        color: #666;
+        transition: all 0.3s;
+    }
+
+        .btn-filter-reset:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: rotate(180deg);
+        }
+
+    /* Результаты */
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .results-count {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 30px;
+        font-size: 1rem;
+        margin-left: 10px;
+    }
+
+    /* Карточка автомобиля */
+    .car-card-modern {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.4s;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+        .car-card-modern:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+
+    .car-card-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 2;
+    }
+
+    .badge-economy {
+        background: linear-gradient(135deg, #00b09b, #96c93d);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .badge-comfort {
+        background: linear-gradient(135deg, #f7971e, #ffd200);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .badge-premium {
+        background: linear-gradient(135deg, #4568DC, #B06AB3);
+        color: white;
+        padding: 8px 15px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .car-card-image {
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .car-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+    .car-card-modern:hover .car-card-image img {
+        transform: scale(1.1);
+    }
+
+    .car-card-content {
+        padding: 20px;
+    }
+
+    .car-card-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    /* Характеристики */
+    .car-specs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+        padding: 15px 0;
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .spec-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+        .spec-item i {
+            width: 16px;
+            color: #667eea;
+        }
+
+    .car-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .car-card-price {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .price-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #667eea;
+    }
+
+    .price-period {
+        font-size: 0.85rem;
+        color: #999;
+        margin-left: 5px;
+    }
+
+    /* Кнопка выбора */
+    .btn-select-car {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+
+        .btn-select-car:hover {
+            transform: translateX(3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+
+        .btn-select-car i {
+            transition: transform 0.3s;
+        }
+
+        .btn-select-car:hover i {
+            transform: translateX(3px);
+        }
+
+    /* Анимации */
+    @@keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @@keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* Адаптивность */
+    @@media (max-width: 768px) {
+        .cars-hero-title {
+            font-size: 2.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+            margin-top: 30px;
+        }
+
+        .filter-group {
+            flex-direction: column;
+        }
+
+        .filter-actions {
+            justify-content: stretch;
+        }
+
+        .btn-filter-apply {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    function applyFilters() {
+        const brand = document.getElementById('brandFilter').value;
+        const condition = document.getElementById('conditionFilter').value;
+
+        const cars = document.querySelectorAll('.car-item');
+        let visibleCount = 0;
+
+        cars.forEach(car => {
+            let visible = true;
+
+            if (brand && car.dataset.brand !== brand) {
+                visible = false;
+            }
+
+            if (condition && car.dataset.condition !== condition) {
+                visible = false;
+            }
+
+            if (visible) {
+                car.style.display = 'block';
+                visibleCount++;
+            } else {
+                car.style.display = 'none';
+            }
+        });
+
+        document.getElementById('carsCount').textContent = visibleCount;
+    }
+
+    function resetFilters() {
+        document.getElementById('brandFilter').value = '';
+        document.getElementById('conditionFilter').value = '';
+
+        const cars = document.querySelectorAll('.car-item');
+        cars.forEach(car => {
+            car.style.display = 'block';
+        });
+
+        document.getElementById('carsCount').textContent = cars.length;
+    }
+</script>
+
+

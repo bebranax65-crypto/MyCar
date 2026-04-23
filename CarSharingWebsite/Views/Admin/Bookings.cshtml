@@ -1,0 +1,114 @@
+@model List<CarSharingWebsite.Models.Booking>
+@{
+    ViewData["Title"] = "Управление бронированиями";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                </a>
+                <a href="/Admin/Users" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2"></i> Пользователи
+                </a>
+                <a href="/Admin/ManageCars" class="list-group-item list-group-item-action">
+                    <i class="fas fa-car me-2"></i> Автомобили
+                </a>
+                <a href="/Admin/Bookings" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-calendar-check me-2"></i> Бронирования
+                </a>
+                <a href="/Admin/Statistics" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-bar me-2"></i> Статистика
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Бронирования</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Пользователь</th>
+                                    <th>Автомобиль</th>
+                                    <th>Начало</th>
+                                    <th>Конец</th>
+                                    <th>Стоимость</th>
+                                    <th>Статус</th>
+                                    <th>Оплата</th>
+                                    <th>Удалить</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var booking in Model)
+                                {
+                                    <tr>
+                                        <td>@booking.ID_Booking</td>
+                                        <td>@(booking.User?.first_name + " " + booking.User?.last_name)</td>
+                                        <td>@(booking.Car?.Brand + " " + booking.Car?.Model)</td>
+                                        <td>@booking.start_datetime?.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td>@booking.end_datetime?.ToString("dd.MM.yyyy HH:mm")</td>
+                                        @{
+                                            decimal cost = 0;
+                                            if (booking.start_datetime.HasValue && booking.end_datetime.HasValue && booking.Car?.Tariffs?.FirstOrDefault() != null)
+                                            {
+                                                var minutes = (decimal)(booking.end_datetime.Value - booking.start_datetime.Value).TotalMinutes;
+                                                var price = booking.Car.Tariffs.First().price_per_minute ?? 0m;
+                                                cost = Math.Max(0m, minutes) * price;
+                                            }
+                                        }
+                                        <td>@cost.ToString("F2") BYN</td>
+                                        <td>
+                                            @if (booking.Status == "Активна")
+                                            {
+                                                <span class="badge bg-success">Активна</span>
+                                            }
+                                            else if (booking.Status == "Завершена")
+                                            {
+                                                <span class="badge bg-secondary">Завершена</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Отменена</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (booking != null)
+                                            {
+                                                <span class="badge bg-success">Оплачено</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning">Не оплачено</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/DeleteBooking/@booking.ID_Booking" class="btn btn-sm btn-danger" onclick="return confirm('Удалить бронирование?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

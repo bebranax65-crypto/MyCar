@@ -1,0 +1,178 @@
+@model List<CarSharingWebsite.Models.User>
+@{
+    ViewData["Title"] = "Управление пользователями";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                </a>
+                <a href="/Admin/Users" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-users me-2"></i> Пользователи
+                </a>
+                <a href="/Admin/ManageCars" class="list-group-item list-group-item-action">
+                    <i class="fas fa-car me-2"></i> Автомобили
+                </a>
+                <a href="/Admin/Bookings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check me-2"></i> Бронирования
+                </a>
+                <a href="/Admin/Statistics" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-bar me-2"></i> Статистика
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Пользователи</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Логин</th>
+                                    <th>ФИО</th>
+                                    <th>Телефон</th>
+                                    <th>Email</th>
+                                    <th>Роль</th>
+                                    <th>Статус</th>
+                                    <th>Баланс</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+                                        <td>@user.ID_User</td>
+                                        <td>
+                                            @user.Login
+                                            @if (user.IsVerified)
+                                            {
+                                                <i class="fas fa-check-circle text-info ms-1" title="Подтверждён"></i>
+                                            }
+                                        </td>
+                                        <td>@user.first_name</td>
+                                        <td>@user.phone</td>
+                                        <td>@user.Email</td>
+                                        <td>
+                                            @if (user.Role == "Admin")
+                                            {
+                                                <span class="badge bg-danger">Admin</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-primary">User</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (user.Role == "Blocked")
+                                            {
+                                                <span class="badge bg-secondary">Заблокирован</span>
+                                            }
+                                            else if (!user.IsVerified && user.Role != "Admin")
+                                            {
+                                                <span class="badge bg-warning text-dark">Ожидает верификации</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-success">Подтверждён</span>
+                                            }
+                                        </td>
+                                        @{
+                                            var balances = ViewBag.Balances as System.Collections.Generic.Dictionary<int, decimal>;
+                                            decimal bal = (balances != null && balances.ContainsKey(user.ID_User)) ? balances[user.ID_User] : 0m;
+                                        }
+                                        <td>@bal.ToString("F2") BYN</td>
+                                        <td>
+                                            @if (!user.IsVerified && user.Role != "Admin" && user.Role != "Blocked")
+                                            {
+                                                <div class="mb-2">
+                                                    <a href="/img/docs/passport_@(user.ID_User).jpg" target="_blank" class="badge bg-info text-decoration-none"><i class="fas fa-id-card me-1"></i>Паспорт</a>
+                                                    <a href="/img/docs/license_@(user.ID_User).jpg" target="_blank" class="badge bg-primary text-decoration-none"><i class="fas fa-car me-1"></i>ВУ</a>
+                                                </div>
+                                                <button class="btn btn-sm btn-success me-1" onclick="verifyUser(@user.ID_User)" title="Подтвердить">
+                                                    <i class="fas fa-user-check"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger me-1" onclick="rejectUser(@user.ID_User)" title="Отклонить">
+                                                    <i class="fas fa-user-times"></i>
+                                                </button>
+                                            }
+                                            @if (user.Role != "Blocked" && user.Role != "Admin")
+                                            {
+                                                <button class="btn btn-sm btn-warning me-1" onclick="blockUser(@user.ID_User)" title="Заблокировать">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            }
+                                            else if (user.Role == "Blocked")
+                                            {
+                                                <button class="btn btn-sm btn-success me-1" onclick="unblockUser(@user.ID_User)" title="Разблокировать">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            }
+                                            @if (user.Role != "Admin")
+                                            {
+                                                <a href="/Admin/DeleteUser/@user.ID_User" class="btn btn-sm btn-danger" onclick="return confirm('Удалить пользователя @user.first_name?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function verifyUser(id) {
+        fetch('/Admin/VerifyUser/' + id, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) location.reload();
+            });
+    }
+
+    function rejectUser(id) {
+        if (!confirm('Отклонить регистрацию этого пользователя? Пользователь будет удалён.')) return;
+        fetch('/Admin/RejectUser/' + id, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) location.reload();
+            });
+    }
+
+    function blockUser(id) {
+        fetch('/Admin/BlockUser/' + id, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) location.reload();
+            });
+    }
+
+    function unblockUser(id) {
+        fetch('/Admin/UnblockUser/' + id, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) location.reload();
+            });
+    }
+</script>
+
+

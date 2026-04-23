@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - mycar</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Наш собственный CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        /* Дополнительные стили для админ-панели */
+        .admin-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 8px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Стили для дропдауна */
+        .dropdown-menu {
+            animation: fadeInDown 0.3s ease-out;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        @@keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+            .dropdown-item i {
+                width: 20px;
+                color: #667eea;
+                transition: all 0.3s;
+            }
+
+            .dropdown-item:hover {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                transform: translateX(5px);
+            }
+
+                .dropdown-item:hover i {
+                    color: white;
+                }
+
+            .dropdown-item.text-danger:hover {
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%);
+                color: white;
+            }
+
+        .dropdown-divider {
+            margin: 10px 0;
+            border-top: 2px dashed #f0f0f0;
+        }
+
+        /* Стили для навигации */
+        .navbar {
+            background: rgba(26, 26, 46, 0.95) !important;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            padding-left: 35px;
+        }
+
+            .navbar-brand i {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #00D2D3;
+                font-size: 2rem;
+                animation: drive 3s infinite ease-in-out;
+            }
+
+        @@keyframes drive {
+            0%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-50%) translateX(5px);
+            }
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            margin: 0 5px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 2px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                transition: width 0.3s;
+            }
+
+            .nav-link:hover::after {
+                width: 80%;
+            }
+
+            .nav-link i {
+                margin-right: 5px;
+                color: #00D2D3;
+            }
+
+        /* Кнопка "Автомобили" */
+        .cars-nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border-radius: 30px !important;
+            padding: 8px 20px !important;
+            margin: 0 10px !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+            .cars-nav-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            }
+
+            .cars-nav-btn::after {
+                display: none;
+            }
+
+        /* Кнопка входа */
+        .btn-login {
+            background: transparent !important;
+            border: 2px solid #00D2D3 !important;
+            color: white !important;
+            padding: 8px 20px !important;
+            border-radius: 30px !important;
+            transition: all 0.3s !important;
+        }
+
+            .btn-login:hover {
+                background: #00D2D3 !important;
+                color: #1a1a2e !important;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 210, 211, 0.4);
+            }
+
+        /* Кнопка регистрации */
+        .btn-register {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border: none !important;
+            color: white !important;
+            padding: 8px 20px !important;
+            border-radius: 30px !important;
+            transition: all 0.3s !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+            .btn-register:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+            }
+
+        /* Адаптивность */
+        @@media (max-width: 991px) {
+            .btn-login, .btn-register {
+                display: block;
+                text-align: center;
+                margin: 5px 0 !important;
+            }
+
+            .nav-item.ms-2 {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигационное меню -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand text-lowercase" href="/">
+                <i class="fas fa-bolt"></i> mycar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i>Главная
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cars-nav-btn" href="/Home/Cars">
+                            <i class="fas fa-car"></i>Автомобили
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Map">
+                            <i class="fas fa-map-marked-alt"></i>Карта
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/HowItWorks">
+                            <i class="fas fa-question-circle"></i>Как это работает
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Tariffs">
+                            <i class="fas fa-tag"></i>Тарифы
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Reviews">
+                            <i class="fas fa-comments"></i>Отзывы
+                        </a>
+                    </li>
+
+                    @{
+                        var isLoggedIn = Context.Session.GetInt32("UserId") != null;
+                        var userLogin = Context.Session.GetString("UserLogin");
+                        var userRole = Context.Session.GetString("UserRole");
+                        var userFullName = Context.Session.GetString("UserFullName");
+                        var isVerified = Context.Session.GetString("UserIsVerified") == "true";
+                    }
+
+                    @if (isLoggedIn)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle"></i>
+                                @userLogin
+                                @if (isVerified)
+                                {
+                                    <i class="fas fa-check-circle text-info ms-1" title="Аккаунт подтверждён"></i>
+                                }
+                                @if (userRole == "Admin")
+                                {
+                                    <span class="admin-badge">Admin</span>
+                                }
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                @if (userRole == "Admin")
+                                {
+                                    <li>
+                                        <a class="dropdown-item" href="/Admin/Dashboard">
+                                            <i class="fas fa-dashboard"></i>Панель администратора
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                }
+                                <li>
+                                    <a class="dropdown-item" href="/Account/Profile">
+                                        <i class="fas fa-user"></i>Личный кабинет
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Account/MyBookings">
+                                        <i class="fas fa-calendar-check"></i>Мои поездки
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="/Account/Logout">
+                                        <i class="fas fa-sign-out-alt"></i>Выйти
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item ms-2">
+                            <a class="nav-link btn-login" href="/Account/Login">
+                                <i class="fas fa-sign-in-alt"></i>Войти
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="nav-link btn-register" href="/Account/Register">
+                                <i class="fas fa-user-plus"></i>Регистрация
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Основной контент страницы -->
+    <main class="main-content">
+        @RenderBody()
+    </main>
+
+    <!-- Подвал (Footer) -->
+    <footer class="bg-dark text-white pt-5 pb-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 style="font-family: 'Orbitron', sans-serif; font-weight: 800; letter-spacing: -1px; text-transform: lowercase;"><i class="fas fa-bolt text-success"></i> mycar</h5>
+                    <p>Каршеринг по-настоящему. Арендуй автомобиль на минуты, часы или сутки.</p>
+                </div>
+                <div class="col-md-2">
+                    <h6>Навигация</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white-50">Главная</a></li>
+                        <li><a href="/Home/Cars" class="text-white-50">Автомобили</a></li>
+                        <li><a href="/Home/Map" class="text-white-50">Карта</a></li>
+                        <li><a href="/Home/HowItWorks" class="text-white-50">Как это работает</a></li>
+                        <li><a href="/Home/Tariffs" class="text-white-50">Тарифы</a></li>
+                        <li><a href="/Home/Reviews" class="text-white-50">Отзывы</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Контакты</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone"></i> +375 (29) 123-45-67</li>
+                        <li><i class="fas fa-envelope"></i> info@mycar.by</li>
+                        <li><i class="fas fa-map-marker-alt"></i> г. Минск, ул. Каршеринговая, 1</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Мы в соцсетях</h6>
+                    <a href="#" class="text-white-50 me-2"><i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="#" class="text-white-50 me-2"><i class="fab fa-telegram fa-2x"></i></a>
+                    <a href="#" class="text-white-50"><i class="fab fa-vk fa-2x"></i></a>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="text-center">
+                <p>© @DateTime.Now.Year mycar. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Скрипты -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+

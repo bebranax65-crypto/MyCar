@@ -1,0 +1,342 @@
+@model IEnumerable<CarSharingWebsite.Models.Car>
+@{
+    ViewData["Title"] = "Карта автомобилей";
+}
+
+<!-- Подключаем Leaflet CSS и JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Подключаем Font Awesome для иконок -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    #map {
+        height: calc(100vh - 76px);
+        width: 100%;
+    }
+
+    .map-container {
+        position: relative;
+    }
+
+    /* Панель фильтрации */
+    .filter-panel {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        width: 300px;
+    }
+
+        .filter-panel h5 {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+    .filter-group {
+        margin-bottom: 15px;
+    }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+        .filter-actions button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+    .btn-apply {
+        background: #007bff;
+        color: white;
+    }
+
+    .btn-reset {
+        background: #6c757d;
+        color: white;
+    }
+
+    .car-count {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        font-weight: 600;
+        color: #28a745;
+    }
+
+    /* Радар */
+    .btn-radar {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 15px 25px;
+        font-weight: bold;
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .btn-radar:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(102, 126, 234, 0.6);
+        color: white;
+    }
+    .radar-active {
+        animation: pulseRadarBtn 1.5s infinite;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    @@keyframes pulseRadarBtn {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    .radar-scan {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        background: rgba(102, 126, 234, 0.2);
+        border: 2px solid rgba(102, 126, 234, 0.5);
+        border-radius: 50%;
+        z-index: 999;
+        pointer-events: none;
+    }
+    .radar-scan.active {
+        animation: radarPing 2s ease-out infinite;
+    }
+    @@keyframes radarPing {
+        0% { width: 0; height: 0; opacity: 1; border-width: 5px; }
+        100% { width: 500px; height: 500px; opacity: 0; border-width: 1px; }
+    }
+</style>
+
+<div class="map-container">
+    <!-- Панель фильтрации -->
+    <div class="filter-panel">
+        <h5><i class="fas fa-filter me-2"></i>Фильтр автомобилей</h5>
+
+        <div class="filter-group">
+            <label>Марка</label>
+            <select id="brandFilter">
+                <option value="">Все марки</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Volkswagen">Volkswagen</option>
+                <option value="Audi">Audi</option>
+                <option value="BMW">BMW</option>
+                <option value="Mercedes">Mercedes</option>
+                <option value="Renault">Renault</option>
+                <option value="Skoda">Skoda</option>
+                <option value="Ford">Ford</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Nissan">Nissan</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Коробка передач</label>
+            <select id="conditionFilter">
+                <option value="">Любая</option>
+                <option value="Автомат">Автомат</option>
+                <option value="Механика">Механика</option>
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button class="btn-apply" onclick="applyFilters()">
+                <i class="fas fa-search me-1"></i>Применить
+            </button>
+            <button class="btn-reset" onclick="resetFilters()">
+                <i class="fas fa-undo me-1"></i>Сброс
+            </button>
+        </div>
+
+        <div class="car-count" id="carCount">
+            Найдено: @Model.Count() машин
+        </div>
+    </div>
+
+    <!-- Карта -->
+    <div id="map"></div>
+
+    <!-- Радар авто -->
+    <button class="btn-radar" id="radarBtn" onclick="toggleRadar()">
+        <i class="fas fa-satellite-dish"></i> Радар
+    </button>
+    <div class="radar-scan" id="radarScan" style="display: none;"></div>
+</div>
+
+<script>
+    // Данные автомобилей
+    const cars = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model, new System.Text.Json.JsonSerializerOptions {
+        ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
+    }));
+
+    console.log('Загружено машин:', cars.length);
+
+    let map;
+    let markers = [];
+
+    // Ждем загрузку страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Создаем карту
+        map = L.map('map').setView([53.9045, 27.5615], 12);
+
+        // Добавляем слой карты
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        const carIcon = L.divIcon({
+            html: '<div style="background: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4); border: 2px solid #6c5ce7;"><i class="fas fa-car" style="color: #6C5CE7; font-size: 22px;"></i></div>',
+            className: 'custom-car-icon',
+            iconSize: [44, 44],
+            iconAnchor: [22, 22],
+            popupAnchor: [0, -22]
+        });
+
+        // Добавляем маркеры
+        let markerCount = 0;
+
+        cars.forEach(car => {
+            if (car.Latitude && car.Longitude) {
+                // Создаем маркер
+                const marker = L.marker([car.Latitude, car.Longitude], {icon: carIcon}).addTo(map);
+
+                const price = (car.Tariffs && car.Tariffs.length > 0) ? car.Tariffs[0].price_per_minute.toFixed(2) : "0.00";
+
+                // Добавляем всплывашку
+                marker.bindPopup(`
+                    <div style="text-align: center; min-width: 220px;">
+                        <img src="${car.PhotoUrl || '/img/default_car.jpg'}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;">
+                        <h5 style="margin: 5px 0; font-weight: bold; color: #333;">${car.Brand} ${car.Model}</h5>
+                        <p style="margin: 5px 0; font-size: 14px;">
+                            <span style="color: #6c5ce7; font-weight: bold; font-size: 16px;">${price} BYN/мин</span><br>
+                            <span class="text-muted">КПП: ${car.condition}</span>
+                        </p>
+                        <span class="badge bg-success mb-3 px-3 py-2 mt-1">Свободен</span>
+                        <a href="/Home/CarDetails/${car.ID_Car}" class="btn btn-primary w-100" style="border-radius: 20px; font-weight: bold; padding: 8px 0;">Подробнее</a>
+                    </div>
+                `, { maxWidth: 260 });
+
+                // Сохраняем маркер
+                markers.push({
+                    marker: marker,
+                    brand: car.Brand,
+                    condition: car.condition
+                });
+
+                markerCount++;
+            }
+        });
+
+        console.log('Добавлено маркеров:', markerCount);
+        updateCounter();
+    });
+
+    function applyFilters() {
+        const brand = document.getElementById('brandFilter').value;
+        const condition = document.getElementById('conditionFilter').value;
+
+        // Убираем все маркеры
+        markers.forEach(item => {
+            map.removeLayer(item.marker);
+        });
+
+        let visibleCount = 0;
+
+        // Добавляем только подходящие
+        markers.forEach(item => {
+            let show = true;
+
+            if (brand && item.brand !== brand) show = false;
+            if (condition && item.condition !== condition) show = false;
+
+            if (show) {
+                item.marker.addTo(map);
+                visibleCount++;
+            }
+        });
+
+        document.getElementById('carCount').textContent = `Найдено: ${visibleCount} машин`;
+    }
+
+    function resetFilters() {
+        document.getElementById('brandFilter').value = '';
+        document.getElementById('conditionFilter').value = '';
+
+        // Показываем все
+        markers.forEach(item => {
+            map.addLayer(item.marker);
+        });
+
+        document.getElementById('carCount').textContent = `Найдено: ${markers.length} машин`;
+    }
+
+    function updateCounter() {
+        document.getElementById('carCount').textContent = `Найдено: ${markers.length} машин`;
+    }
+
+    // Радар Логика
+    let radarInterval;
+    function toggleRadar() {
+        const btn = document.getElementById('radarBtn');
+        const scan = document.getElementById('radarScan');
+        const isActive = btn.classList.contains('radar-active');
+
+        if (isActive) {
+            btn.classList.remove('radar-active');
+            btn.innerHTML = '<i class="fas fa-satellite-dish"></i> Радар';
+            scan.classList.remove('active');
+            scan.style.display = 'none';
+            clearTimeout(radarInterval);
+        } else {
+            btn.classList.add('radar-active');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Поиск авто...';
+            scan.style.display = 'block';
+            scan.classList.add('active');
+            
+            radarInterval = setTimeout(() => {
+                if(btn.classList.contains('radar-active')) {
+                    alert('Радар нашел освободившийся автомобиль рядом с вами! Карта обновлена.');
+                    toggleRadar();
+                }
+            }, 6000);
+        }
+    }
+</script>
+
+

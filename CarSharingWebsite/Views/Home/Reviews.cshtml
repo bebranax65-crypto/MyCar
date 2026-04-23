@@ -1,0 +1,130 @@
+@model IEnumerable<CarSharingWebsite.Models.Review>
+@{
+    ViewData["Title"] = "Отзывы клиентов - mycar";
+}
+
+<!-- Заголовок страницы -->
+<section class="py-5 text-center text-white" style="margin-top: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); padding-bottom: 80px !important;">
+    <div class="container pb-4">
+        <h1 class="display-5 fw-bold mb-3"><i class="fas fa-comments text-info me-3"></i>Отзывы наших клиентов</h1>
+        <p class="lead text-white-50">Узнайте, что говорят о нас пользователи, или оставьте свой отзыв.</p>
+    </div>
+</section>
+
+<!-- Отзывы и форма -->
+<section class="py-5">
+    <div class="container">
+        
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <!-- Оповещения -->
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success mt-3 mb-4 shadow-sm fw-bold">
+                        <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger mt-3 mb-4 shadow-sm fw-bold">
+                        <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+                    </div>
+                }
+
+                <!-- Форма добавления отзыва если пользователь авторизован -->
+                @if (Context.Session.GetInt32("UserId") != null)
+                {
+                    <div class="card shadow-sm mb-5 border-0 rounded-4">
+                        <div class="card-header bg-white border-0 pt-4 pb-0">
+                            <h5 class="fw-bold"><i class="fas fa-edit text-primary me-2"></i>Оставить отзыв</h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <form method="post" action="/Home/AddReview">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Ваша оценка</label>
+                                    <select name="rating" class="form-select bg-light border-0" required>
+                                        <option value="5">⭐⭐⭐⭐⭐ (5) Отлично</option>
+                                        <option value="4">⭐⭐⭐⭐ (4) Хорошо</option>
+                                        <option value="3">⭐⭐⭐ (3) Нормально</option>
+                                        <option value="2">⭐⭐ (2) Плохо</option>
+                                        <option value="1">⭐ (1) Ужасно</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Комментарий</label>
+                                    <textarea name="comment" class="form-control bg-light border-0" rows="4" placeholder="Напишите ваши впечатления от аренды..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold py-2 shadow-sm">
+                                    <i class="fas fa-paper-plane me-2"></i>Отправить отзыв
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info text-center shadow-sm mb-5 rounded-4 p-4 border-0">
+                        <h5>Хотите оставить отзыв?</h5>
+                        <p class="mb-3 text-muted">Для того чтобы оставить отзыв, пожалуйста, авторизуйтесь в системе.</p>
+                        <a href="/Account/Login" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Войти в аккаунт</a>
+                    </div>
+                }
+
+                <h4 class="mb-4 fw-bold text-center">Последние отзывы</h4>
+
+                @if (!Model.Any())
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-comment-slash fa-4x text-muted mb-3 opacity-25"></i>
+                        <h4 class="text-muted">Отзывов пока нет</h4>
+                        <p class="text-secondary">Будьте первым, кто оставит отзыв о нашем сервисе!</p>
+                    </div>
+                }
+                else
+                {
+                    foreach (var review in Model)
+                    {
+                        <div class="card shadow-sm mb-4 border-0 rounded-4 review-card">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold fs-5 shadow" style="width: 50px; height: 50px;">
+                                            @review.User?.first_name?.Substring(0, 1).ToUpper()
+                                        </div>
+                                        <div class="ms-3">
+                                            <h6 class="mb-0 fw-bold">@review.User?.first_name @review.User?.last_name</h6>
+                                            <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>@review.review_date?.ToString("dd MMMM yyyy")</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-warning fs-5 bg-light px-3 py-1 rounded-pill">
+                                        @for (int i = 0; i < review.rating; i++)
+                                        {
+                                            <i class="fas fa-star"></i>
+                                        }
+                                        @for (int i = (review.rating ?? 0); i < 5; i++)
+                                        {
+                                            <i class="far fa-star"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <p class="card-text text-secondary bg-light p-3 rounded-3" style="font-size: 1.05rem; line-height: 1.6;">
+                                    "@review.comment"
+                                </p>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .review-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+</style>

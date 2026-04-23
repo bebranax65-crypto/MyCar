@@ -1,0 +1,537 @@
+@model IEnumerable<CarSharingWebsite.Models.Car>
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<!-- Hero секция (обложка) -->
+<section class="hero-section">
+    <div class="container hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="hero-title">Арендуй автомобиль <br>на минуты, часы или сутки</h1>
+
+
+                <!-- Быстрая регистрация -->
+                @if (Context.Session.GetInt32("UserId") == null)
+                {
+                    <div class="registration-banner">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Регистрация за 30 минут</span>
+                        <small>Быстрая и простая регистрация на сайте</small>
+                    </div>
+                }
+
+                <!-- Кнопки действий -->
+                <div class="hero-buttons">
+                    @if (Context.Session.GetInt32("UserId") == null)
+                    {
+                        <a href="/Account/Register" class="btn-hero-primary">
+                            <i class="fas fa-user-plus"></i>Зарегистрироваться
+                        </a>
+                    }
+                    <a href="/Home/Cars" class="btn-hero-secondary">
+                        <i class="fas fa-car"></i>Выбрать авто
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Преимущества -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Почему выбирают нас</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="feature-title">Поминутная аренда</h3>
+                    <p>Платите только за фактическое время использования. Минимальный тариф — 1 минута.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <h3 class="feature-title">Бензин включен</h3>
+                    <p>Заправляйтесь бесплатно на всех АЗС. Топливная карта всегда в машине.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Страховка включена</h3>
+                    <p>Все автомобили застрахованы. Вы защищены на время поездки.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Более 300 парковок</h3>
+                    <p>Оставляйте авто на любой парковке в зоне завершения аренды.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="feature-title">Поддержка 24/7</h3>
+                    <p>Круглосуточная онлайн поддержка поможет решить любые вопросы.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Удобный сайт</h3>
+                    <p>Управляйте арендой через сайт с любого устройства.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Популярные автомобили -->
+<section class="popular-cars-section">
+    <div class="container">
+        <h2 class="section-title">Популярные автомобили</h2>
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var car in Model)
+                {
+                    <div class="col-md-4">
+                        <div class="car-card">
+                            <div class="car-image">
+                                @if (!string.IsNullOrEmpty(car.Brand))
+                                {
+                                    <img src="@(string.IsNullOrEmpty(car.PhotoUrl) ? "/img/default_car.jpg" : car.PhotoUrl)" alt="@car.Brand @car.Model">
+                                }
+                                else
+                                {
+                                    <div style="width:100%; height:100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-car fa-4x text-white"></i>
+                                    </div>
+                                }
+                                <span class="car-badge">Доступен</span>
+                            </div>
+                            <div class="car-info">
+                                <h3 class="car-title">@car.Brand @car.Model</h3>
+                                <div class="car-details">
+                                    <span><i class="fas fa-cog"></i> "Автомат"</span>
+                                    <span><i class="fas fa-gas-pump"></i> @(car.condition ?? "Бензин")</span>
+                                    <span><i class="fas fa-chair"></i> 5 мест</span>
+                                </div>
+                                <div class="car-price">
+                                    <div>
+                                        <span class="price-tag">@(car.Tariffs?.FirstOrDefault()?.price_per_minute?.ToString("F2") ?? "0.00") BYN <small>/мин</small></span>
+                                        <span class="price-tag ms-2">@(car.Tariffs?.FirstOrDefault()?.price_per_hour?.ToString("F2") ?? "0.00") BYN <small>/час</small></span>
+                                    </div>
+                                    <a href="/Home/CarDetails/@car.ID_Car" class="btn-book">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="text-center mt-5">
+            <a href="/Home/Cars" class="btn-view-all">
+                Смотреть все автомобили <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="news-section">
+    <div class="container">
+        <h2 class="section-title text-white">Новости и акции</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="news-card">
+                    <div class="news-image-wrapper">
+                        <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> 1 марта 2026</div>
+                        <h4 class="news-title">Новые автомобили в парке</h4>
+                        <p>Пополнение автопарка: 10 новых Hyundai Solaris уже ждут вас!</p>
+                        <a href="#" class="btn-news">Подробнее <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="news-card">
+                    <div class="news-image-wrapper">
+                        <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> 15 февраля 2026</div>
+                        <h4 class="news-title">Скидка 20% на первые 3 поездки</h4>
+                        <p>Для новых пользователей скидка на первые три аренды</p>
+                        <a href="#" class="btn-news">Подробнее <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="news-card">
+                    <div class="news-image-wrapper">
+                        <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80');"></div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> 1 февраля 2026</div>
+                        <h4 class="news-title">Расширение зоны покрытия</h4>
+                        <p>Теперь каршеринг доступен в новых районах Минска</p>
+                        <a href="#" class="btn-news">Подробнее <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Призыв к действию -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="cta-title">Готовы начать?</h2>
+                    <p class="cta-text">Зарегистрируйтесь сейчас и получите 30 минут аренды в подарок!</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="/Account/Register" class="btn-cta">
+                        Присоединиться <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Дополнительные стили для главной страницы */
+    .hero-section {
+        background: linear-gradient(to right, rgba(15, 20, 30, 0.95), rgba(15, 20, 30, 0.3)), url('https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1920&q=80') center/cover;
+        color: white;
+        padding: 160px 0 120px 0;
+        margin-top: -76px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .hero-section::before {
+            display: none;
+        }
+
+    @@keyframes moveBackground {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(-100px);
+        }
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        font-family: 'Orbitron', sans-serif;
+        margin-bottom: 20px;
+        text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 30px;
+        animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .registration-banner {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 60px;
+        padding: 20px 30px;
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255,255,255,0.2);
+        animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+        .registration-banner i {
+            font-size: 2rem;
+            color: #4CAF50;
+        }
+
+        .registration-banner span {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .registration-banner small {
+            color: rgba(255,255,255,0.7);
+        }
+
+    .hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+
+    .btn-hero-primary {
+        background: #00E676;
+        color: #111;
+        padding: 16px 45px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.15rem;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(0, 230, 118, 0.4);
+    }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 230, 118, 0.6);
+            color: #000;
+        }
+
+    .btn-hero-secondary {
+        background: transparent;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+        .btn-hero-secondary:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-3px);
+            color: white;
+        }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .btn-view-all {
+        display: inline-block;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .btn-view-all:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .btn-view-all i {
+            transition: transform 0.3s;
+        }
+
+        .btn-view-all:hover i {
+            transform: translateX(5px);
+        }
+
+    .news-section {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: white;
+        padding: 80px 0;
+        margin-top: 50px;
+        clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+    }
+
+    .news-card {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        overflow: hidden;
+        height: 100%;
+        transition: all 0.3s;
+    }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+    .news-image-wrapper {
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .news-image {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .news-card:hover .news-image {
+        transform: scale(1.1);
+    }
+
+    .news-content {
+        padding: 25px;
+    }
+
+    .news-date {
+        color: rgba(255,255,255,0.7);
+        margin-bottom: 10px;
+    }
+
+    .news-title {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .btn-news {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s;
+    }
+
+        .btn-news:hover {
+            color: #764ba2;
+            gap: 10px;
+        }
+
+    .cta-section {
+        padding: 80px 0;
+    }
+
+    .cta-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 30px;
+        padding: 60px;
+        color: white;
+        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+    }
+
+    .cta-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .cta-text {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    .btn-cta {
+        background: white;
+        color: #667eea;
+        padding: 15px 40px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s;
+    }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            color: #764ba2;
+        }
+
+        .btn-cta i {
+            transition: transform 0.3s;
+        }
+
+        .btn-cta:hover i {
+            transform: translateX(5px);
+        }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .registration-banner {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+        }
+
+        .cta-card {
+            padding: 30px;
+            text-align: center;
+        }
+
+            .cta-card .text-lg-end {
+                text-align: center !important;
+                margin-top: 20px;
+            }
+    }
+</style>
+
+

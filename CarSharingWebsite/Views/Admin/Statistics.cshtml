@@ -1,0 +1,135 @@
+@{
+    ViewData["Title"] = "Статистика";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                </a>
+                <a href="/Admin/Users" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2"></i> Пользователи
+                </a>
+                <a href="/Admin/ManageCars" class="list-group-item list-group-item-action">
+                    <i class="fas fa-car me-2"></i> Автомобили
+                </a>
+                <a href="/Admin/Bookings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check me-2"></i> Бронирования
+                </a>
+                <a href="/Admin/Statistics" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-chart-bar me-2"></i> Статистика
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-10">
+            <!-- Выбор периода -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select class="form-select">
+                                <option>За сегодня</option>
+                                <option>За неделю</option>
+                                <option selected>За месяц</option>
+                                <option>За год</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" value="2026-03-01">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" value="2026-03-10">
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary w-100">Показать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточки статистики -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h6>Всего поездок</h6>
+                            <h3>@ViewBag.TotalTrips</h3>
+                            <small>за все время</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h6>Общая выручка</h6>
+                            <h3>@ViewBag.TotalRevenue.ToString("F2") BYN</h3>
+                            <small>за все время</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h6>Средний чек</h6>
+                            <h3>@ViewBag.AverageCheck.ToString("F2") BYN</h3>
+                            <small>за поездку</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <h6>Новые пользователи</h6>
+                            <h3>@ViewBag.NewUsers</h3>
+                            <small>за последние 30 дней</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Таблица топ пользователей -->
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Топ пользователей</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Пользователь</th>
+                                <th>Поездок</th>
+                                <th>Потрачено</th>
+                                <th>Часов</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.TopUsers != null)
+                            {
+                                foreach (var item in (List<Tuple<CarSharingWebsite.Models.User, int, decimal, decimal>>)ViewBag.TopUsers)
+                                {
+                                    <tr>
+                                        <td>@(item.Item1 != null ? (item.Item1.first_name + " " + item.Item1.last_name) : "Удаленный пользователь")</td>
+                                        <td>@item.Item2</td>
+                                        <td>@item.Item3.ToString("F2") BYN</td>
+                                        <td>@item.Item4.ToString("F0") ч</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,232 @@
+@{
+    ViewData["Title"] = "Вход в систему";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="login-card animate-slide-up">
+                <div class="text-center mb-4">
+                    <div class="login-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h2 class="login-title">Добро пожаловать!</h2>
+                    <p class="login-subtitle">Войдите в свой аккаунт</p>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-info-circle me-2"></i> @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> @ViewBag.Error
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form method="post" action="/Account/Login">
+                    <div class="form-group mb-4">
+                        <label class="form-label">
+                            <i class="fas fa-user me-2"></i>Логин
+                        </label>
+                        <input type="text" name="login" class="form-control form-control-lg"
+                               placeholder="Введите логин" required>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="form-label">
+                            <i class="fas fa-lock me-2"></i>Пароль
+                        </label>
+                        <input type="password" name="password" class="form-control form-control-lg"
+                               placeholder="Введите пароль" required>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Запомнить меня</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-login-submit w-100 mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Войти
+                    </button>
+
+                    <div class="text-center">
+                        <p class="mb-0">
+                            Нет аккаунта?
+                            <a href="/Account/Register" class="register-link">
+                                Зарегистрироваться <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .login-card {
+        background: white;
+        border-radius: 30px;
+        padding: 50px 40px;
+        box-shadow: 0 20px 60px rgba(108, 92, 231, 0.2);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(108, 92, 231, 0.1);
+    }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+    .login-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: float 3s ease-in-out infinite;
+    }
+
+        .login-icon i {
+            font-size: 40px;
+            color: white;
+        }
+
+    .login-title {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 10px;
+    }
+
+    .login-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+    }
+
+        .form-label i {
+            color: var(--primary);
+        }
+
+    .form-control {
+        border: 2px solid #f0f0f0;
+        border-radius: 15px;
+        padding: 15px;
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+
+    .btn-login-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 15px;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-login-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-login-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-login-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+
+    .register-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .register-link:hover {
+            color: var(--secondary);
+        }
+
+        .register-link i {
+            transition: transform 0.3s;
+        }
+
+        .register-link:hover i {
+            transform: translateX(5px);
+        }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.8s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-check-input:checked {
+        background-color: var(--primary);
+        border-color: var(--primary);
+    }
+</style>
+
+

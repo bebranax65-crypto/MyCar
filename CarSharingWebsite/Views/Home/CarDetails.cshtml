@@ -1,0 +1,136 @@
+@model CarSharingWebsite.Models.Car
+@{
+    ViewData["Title"] = @Model.Brand + " " + @Model.Model;
+    var isLoggedIn = Context.Session.GetInt32("UserId") != null;
+}
+
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <img src="@(string.IsNullOrEmpty(Model.PhotoUrl) ? "/img/default_car.jpg" : Model.PhotoUrl)" class="card-img-top" alt="@Model.Brand @Model.Model" style="max-height: 400px; object-fit: cover;">
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Характеристики</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>Марка:</td>
+                                    <td><strong>@Model.Brand</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Модель:</td>
+                                    <td><strong>@Model.Model</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Госномер:</td>
+                                    <td><strong>@Model.LicensePlate</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Коробка передач:</td>
+                                    <td><strong>"Автомат"</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>Топливо:</td>
+                                    <td><strong>@(Model.condition ?? "Бензин")</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Цена за минуту:</td>
+                                    <td><strong>@(Model.Tariffs?.FirstOrDefault()?.price_per_minute?.ToString("F2") ?? "0.00") BYN</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Цена за час:</td>
+                                    <td><strong>@(Model.Tariffs?.FirstOrDefault()?.price_per_hour?.ToString("F2") ?? "0.00") BYN</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Минимальное время:</td>
+                                    <td><strong>@(Model.Tariffs?.FirstOrDefault()?.min_duration?.ToString() ?? "0") мин</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Местоположение</h5>
+                </div>
+                <div class="card-body">
+                    <p><i class="fas fa-map-marker-alt me-2 text-danger"></i> @(string.IsNullOrEmpty(Model.Address) ? "Минск (Адрес не указан)" : Model.Address)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Забронировать</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h3 class="text-primary">@(Model.Tariffs?.FirstOrDefault()?.price_per_minute?.ToString("F2") ?? "0.00") BYN</h3>
+                        <p class="text-muted">за минуту</p>
+                    </div>
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["Error"]</div>
+                    }
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Success"]</div>
+                    }
+
+                    @if (isLoggedIn)
+                    {
+                        <form method="post" action="/Home/CreateBooking">
+                            <input type="hidden" name="CarId" value="@Model.ID_Car">
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Начало аренды</label>
+                                <input type="datetime-local" name="StartTime" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Конец аренды</label>
+                                <input type="datetime-local" name="EndTime" class="form-control" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100">Забронировать</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <p>Чтобы забронировать автомобиль, нужно войти в систему.</p>
+                            <a href="/Account/Login" class="btn btn-primary w-100">Войти</a>
+                            <a href="/Account/Register" class="btn btn-outline-primary w-100 mt-2">Регистрация</a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Поддержка</h5>
+                </div>
+                <div class="card-body">
+                    <p><i class="fas fa-phone me-2"></i> +375 (29) 123-45-67</p>
+                    <p><i class="fas fa-envelope me-2"></i> support@mycar.by</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

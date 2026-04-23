@@ -1,0 +1,200 @@
+@{
+    ViewData["Title"] = "Панель администратора";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-2">
+            <div class="card mb-3">
+                <div class="card-body bg-primary text-white text-center">
+                    <i class="fas fa-user-shield fa-3x mb-2"></i>
+                    <h6>@Context.Session.GetString("UserFullName")</h6>
+                    <span class="badge bg-light text-dark">Администратор</span>
+                </div>
+            </div>
+            
+            <div class="list-group">
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                </a>
+                <a href="/Admin/Users" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2"></i> Пользователи
+                </a>
+                <a href="/Admin/ManageCars" class="list-group-item list-group-item-action">
+                    <i class="fas fa-car me-2"></i> Автомобили
+                </a>
+                <a href="/Admin/Bookings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check me-2"></i> Бронирования
+                </a>
+                <a href="/Admin/Statistics" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-bar me-2"></i> Статистика
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-10">
+            <!-- Статистика -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>Пользователи</h6>
+                                    <h3>@ViewBag.TotalUsers</h3>
+                                </div>
+                                <i class="fas fa-users fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-orange" style="background: #e67e22;">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>Ожидают верификации</h6>
+                                    <h3>@ViewBag.PendingVerifications</h3>
+                                </div>
+                                <i class="fas fa-user-clock fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>Активные аренды</h6>
+                                    <h3>@ViewBag.ActiveRentals</h3>
+                                </div>
+                                <i class="fas fa-car fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-info">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>Свободные авто</h6>
+                                    <h3>@ViewBag.AvailableCars</h3>
+                                </div>
+                                <i class="fas fa-parking fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6>Выручка сегодня</h6>
+                                    <h3>@ViewBag.TodayRevenue BYN</h3>
+                                </div>
+                                <i class="fas fa-ruble-sign fa-3x opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки быстрых действий (УБРАЛ "Добавить пользователя") -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Быстрые действия</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <a href="/Admin/AddCar" class="btn btn-outline-primary w-100">
+                                        <i class="fas fa-plus-circle me-2"></i>Добавить автомобиль
+                                    </a>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <a href="/Admin/Bookings" class="btn btn-outline-info w-100">
+                                        <i class="fas fa-calendar-plus me-2"></i>Все бронирования
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Две колонки: последние действия и популярные автомобили -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Последние действия</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                @if (ViewBag.RecentActivities != null)
+                                {
+                                    foreach (var activity in (List<Tuple<string, DateTime, string>>)ViewBag.RecentActivities)
+                                    {
+                                        <li class="mb-3 pb-2 border-bottom">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    @if (activity.Item1 == "User")
+                                                    {
+                                                        <i class="fas fa-user-plus text-success me-2"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fas fa-car text-primary me-2"></i>
+                                                    }
+                                                    <strong>@activity.Item3.Split(new[] { " - " }, StringSplitOptions.None)[0]</strong> - @(activity.Item3.Contains(" - ") ? activity.Item3.Split(new[] { " - " }, StringSplitOptions.None)[1] : "")
+                                                </div>
+                                                <small class="text-muted">@activity.Item2.ToString("dd.MM HH:mm")</small>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0">Популярные автомобили</h5>
+                        </div>
+                        <div class="card-body">
+                            @if (ViewBag.PopularCars != null)
+                            {
+                                foreach (var car in (List<Tuple<string, int, int>>)ViewBag.PopularCars)
+                                {
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>@car.Item1</span>
+                                            <span class="badge bg-primary">@car.Item2 бронирований</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-primary" style="width: @car.Item3%"></div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

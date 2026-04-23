@@ -1,0 +1,295 @@
+@model CarSharingWebsite.Models.User
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="register-card animate-slide-up">
+                <div class="text-center mb-4">
+                    <div class="register-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2 class="register-title">Создать аккаунт</h2>
+                    <p class="register-subtitle">Присоединяйтесь к mycar</p>
+                </div>
+
+                <form method="post" action="/Account/Register">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-user me-2"></i>Логин
+                            </label>
+                            <input type="text" name="Login" class="form-control"
+                                   placeholder="Придумайте логин" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-lock me-2"></i>Пароль
+                            </label>
+                            <input type="password" name="Password" class="form-control"
+                                   placeholder="Придумайте пароль" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-id-card me-2"></i>ФИО
+                        </label>
+                        <input type="text" name="FullName" class="form-control"
+                               placeholder="Иванов Иван Иванович" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" name="Email" class="form-control"
+                               placeholder="example@mycar.by" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-phone me-2"></i>Телефон
+                            </label>
+                            <input type="tel" name="PhoneNumber" class="form-control"
+                                   placeholder="+375 (29) 123-45-67" required>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            Я согласен с <a href="#" class="terms-link">условиями использования</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-register-submit w-100 mb-3">
+                        <i class="fas fa-user-plus me-2"></i>Зарегистрироваться
+                    </button>
+
+                    <div class="text-center">
+                        <p class="mb-0">
+                            Уже есть аккаунт?
+                            <a href="/Account/Login" class="login-link">
+                                Войти <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </p>
+                    </div>
+                </form>
+
+                <div class="benefits-section mt-5">
+                    <h5 class="text-center mb-3">Что вы получите:</h5>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Доступ к 200+ авто</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Бонусы при регистрации</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Круглосуточная поддержка</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="benefit-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Бензин включен</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .register-card {
+        background: white;
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 20px 60px rgba(108, 92, 231, 0.2);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(108, 92, 231, 0.1);
+    }
+
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+    .register-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        animation: morph 8s ease-in-out infinite;
+    }
+
+    @@keyframes morph {
+        0%, 100% {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        25% {
+            border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+        }
+
+        50% {
+            border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+        }
+
+        75% {
+            border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+        }
+    }
+
+    .register-icon i {
+        font-size: 40px;
+        color: white;
+    }
+
+    .register-title {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 10px;
+    }
+
+    .register-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+    }
+
+    .btn-register-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        padding: 15px;
+        border-radius: 15px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-register-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-register-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-register-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+        }
+
+    .login-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .login-link:hover {
+            color: var(--secondary);
+        }
+
+        .login-link i {
+            transition: transform 0.3s;
+        }
+
+        .login-link:hover i {
+            transform: translateX(5px);
+        }
+
+    .terms-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .terms-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+    .benefits-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+        padding: 25px;
+        border-radius: 20px;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+        .benefit-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .benefit-item span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+    .animate-slide-up {
+        animation: slideUp 0.8s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+

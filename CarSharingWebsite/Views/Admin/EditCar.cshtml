@@ -1,0 +1,122 @@
+@model CarSharingWebsite.Models.Car
+@{
+    ViewData["Title"] = "Редактирование автомобиля";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                </a>
+                <a href="/Admin/Users" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2"></i> Пользователи
+                </a>
+                <a href="/Admin/ManageCars" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-car me-2"></i> Автомобили
+                </a>
+                <a href="/Admin/Bookings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check me-2"></i> Бронирования
+                </a>
+                <a href="/Admin/Statistics" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-bar me-2"></i> Статистика
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Редактировать автомобиль — @Model.Brand @Model.Model</h4>
+                    <a href="/Admin/ManageCars" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-arrow-left me-1"></i>Назад
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/Admin/EditCar" enctype="multipart/form-data">
+                        <input type="hidden" name="ID_Car" value="@Model.ID_Car" />
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Марка</label>
+                                <input type="text" name="Brand" class="form-control" value="@Model.Brand" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Модель</label>
+                                <input type="text" name="Model" class="form-control" value="@Model.Model" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Госномер</label>
+                                <input type="text" name="LicensePlate" class="form-control" value="@Model.LicensePlate" maxlength="10" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Цвет</label>
+                                <input type="text" name="Color" class="form-control" value="@Model.Color">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Год выпуска</label>
+                                <input type="number" name="Year" class="form-control" value="@Model.Year">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Коробка передач</label>
+                                <select name="condition" class="form-select">
+                                    @if (Model.condition == "Автомат")
+                                    {
+                                        <option value="Автомат" selected>Автомат</option>
+                                        <option value="Механика">Механика</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Автомат">Автомат</option>
+                                        <option value="Механика" selected>Механика</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Цена за минуту (BYN)</label>
+                                <input type="number" name="PricePerMinute" class="form-control" step="0.01" value="@ViewBag.PricePerMinute" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Цена за час (BYN)</label>
+                                <input type="number" name="PricePerHour" class="form-control" step="0.01" value="@ViewBag.PricePerHour" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Минимальное время (мин)</label>
+                                <input type="number" name="MinDuration" class="form-control" value="@ViewBag.MinDuration" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Адрес</label>
+                                <input type="text" name="Address" class="form-control" value="@Model.Address">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Текущее фото</label>
+                                @if (!string.IsNullOrEmpty(Model.PhotoUrl))
+                                {
+                                    <div class="mb-2">
+                                        <img src="@Model.PhotoUrl" alt="Фото авто" style="max-height: 150px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);" />
+                                    </div>
+                                }
+                                <label class="form-label">Загрузить новое фото (необязательно)</label>
+                                <input type="file" name="ImageFile" class="form-control" accept="image/*">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Сохранить изменения
+                                </button>
+                                <a href="/Admin/ManageCars" class="btn btn-secondary">
+                                    <i class="fas fa-times me-2"></i>Отмена
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

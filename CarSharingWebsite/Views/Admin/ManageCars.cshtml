@@ -1,0 +1,99 @@
+@model List<CarSharingWebsite.Models.Car>
+@{
+    ViewData["Title"] = "Управление автомобилями";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <!-- Боковое меню -->
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                </a>
+                <a href="/Admin/Users" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2"></i> Пользователи
+                </a>
+                <a href="/Admin/ManageCars" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-car me-2"></i> Автомобили
+                </a>
+                <a href="/Admin/Bookings" class="list-group-item list-group-item-action">
+                    <i class="fas fa-calendar-check me-2"></i> Бронирования
+                </a>
+                <a href="/Admin/Statistics" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-bar me-2"></i> Статистика
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/Account/Logout" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i> Выход
+                </a>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Автомобили</h4>
+                    <a href="/Admin/AddCar" class="btn btn-primary btn-sm">
+                        <i class="fas fa-plus-circle me-2"></i>Добавить
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Марка</th>
+                                    <th>Модель</th>
+                                    <th>Госномер</th>
+                                    <th>КПП</th>
+                                    <th>Цена/мин</th>
+                                    <th>Статус</th>
+                                    <th>Удаление</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var car in Model)
+                                {
+                                    <tr>
+                                        <td>@car.ID_Car</td>
+                                        <td>@car.Brand</td>
+                                        <td>@car.Model</td>
+                                        <td>@car.LicensePlate</td>
+                                        <td>"Автомат"</td>
+                                        <td>@(car.Tariffs?.FirstOrDefault()?.price_per_minute?.ToString("F2") ?? "0.00") BYN</td>
+                                        <td>
+                                            @if (car.status == "Свободен")
+                                            {
+                                                <span class="badge bg-success">Доступен</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">Занят</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/DeleteCar/@car.ID_Car" class="btn btn-sm btn-danger" onclick="return confirm('Удалить автомобиль @car.Brand @car.Model?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/Admin/EditCar/@car.ID_Car" class="btn btn-sm btn-warning" title="Редактировать">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
