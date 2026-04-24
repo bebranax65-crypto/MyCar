@@ -152,8 +152,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Controllers\\AdminController.cs",
               "ViewState": "AgIAALcAAAAAAAAAAAAiwN4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T09:41:00.435Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T09:41:00.435Z"
             },
             {
               "$type": "Document",
@@ -165,8 +164,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Home\\CarDetails.cshtml",
               "ViewState": "AgIAAIUAAAAAAAAAAIBJwIgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T06:22:53.971Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T06:22:53.971Z"
             },
             {
               "$type": "Document",
@@ -178,8 +176,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Admin\\Users.cshtml",
               "ViewState": "AgIAAGEAAAAAAAAAAAAAwIAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:31:59.938Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:31:59.938Z"
             },
             {
               "$type": "Document",
@@ -191,8 +188,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Admin\\Dashboard.cshtml",
               "ViewState": "AgIAAKIAAAAAAAAAAAAiwMgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-09T09:41:41.045Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T09:41:41.045Z"
             },
             {
               "$type": "Document",
@@ -204,8 +200,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Controllers\\AccountController.cs",
               "ViewState": "AgIAAOoAAAAAAAAAAAAiwP8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T07:37:41.882Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:37:41.882Z"
             },
             {
               "$type": "Document",
@@ -217,8 +212,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Program.cs",
               "ViewState": "AgIAADcAAAAAAAAAAAAAAE4AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T07:31:59.048Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:31:59.048Z"
             },
             {
               "$type": "Document",
@@ -241,8 +235,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Admin\\AddCar.cshtml",
               "ViewState": "AgIAAGgAAAAAAAAAAAAkwGsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:47:03.007Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:47:03.007Z"
             },
             {
               "$type": "Document",
@@ -267,8 +260,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Migrations\\20260316091255_InitialCreate.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-16T09:12:55.73Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-16T09:12:55.73Z"
             },
             {
               "$type": "Document",
@@ -280,8 +272,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Controllers\\HomeController.cs",
               "ViewState": "AgIAAFAAAAAAAAAAAAAUwJgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T07:37:20.387Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:37:20.387Z"
             },
             {
               "$type": "Document",
@@ -304,8 +295,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Models\\ApplicationDbContext.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAkwCEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-13T09:21:17.845Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-13T09:21:17.845Z"
             },
             {
               "$type": "Document",
@@ -317,8 +307,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Admin\\ManageCars.cshtml",
               "ViewState": "AgIAAEUAAAAAAAAAAAAiwFoAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:33:09.758Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:33:09.758Z"
             },
             {
               "$type": "Document",
@@ -330,8 +319,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Models\\Booking.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAA5wBsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T07:23:12.07Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:23:12.07Z"
             },
             {
               "$type": "Document",
@@ -343,8 +331,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Home\\Map.cshtml",
               "ViewState": "AgIAAMMAAAAAAAAAAAAiwNkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-07T07:41:20.535Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:41:20.535Z"
             },
             {
               "$type": "Document",
@@ -356,8 +343,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Models\\User.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAA2wCwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T07:30:20.663Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:30:20.663Z"
             },
             {
               "$type": "Document",
@@ -369,8 +355,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Models\\Car.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAiwDUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-07T07:21:40.716Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:21:40.716Z"
             },
             {
               "$type": "Document",
@@ -382,8 +367,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Account\\MyBookings.cshtml",
               "ViewState": "AgIAAEMAAAAAAAAAAAAiwE8AAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:30:56.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:30:56.831Z"
             },
             {
               "$type": "Document",
@@ -395,8 +379,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Home\\Index.cshtml",
               "ViewState": "AgIAAHQAAAAAAAAAAAAiwIQAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-07T07:27:16.359Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:27:16.359Z"
             },
             {
               "$type": "Document",
@@ -408,8 +391,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Home\\Tariffs.cshtml",
               "ViewState": "AgIAABwEAAAAAAAAACBjwE8EAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-09T09:18:00.093Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T09:18:00.093Z"
             },
             {
               "$type": "Document",
@@ -421,8 +403,7 @@
               "RelativeToolTip": "CarSharingWebsite\\wwwroot\\css\\site.css",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAKUEAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-03-07T07:26:50.237Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:26:50.237Z"
             },
             {
               "$type": "Document",
@@ -434,8 +415,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Admin\\Statistics.cshtml",
               "ViewState": "AgIAAGMAAAAAAAAAAAAiwIcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:46:45.84Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:46:45.84Z"
             },
             {
               "$type": "Document",
@@ -447,8 +427,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Home\\Cars.cshtml",
               "ViewState": "AgIAAAcCAAAAAAAAAAAiwC4CAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-09T09:14:20.115Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T09:14:20.115Z"
             },
             {
               "$type": "Document",
@@ -460,8 +439,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Admin\\Bookings.cshtml",
               "ViewState": "AgIAAG8AAAAAAAAAAIBJwHIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:46:29.627Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:46:29.627Z"
             },
             {
               "$type": "Document",
@@ -473,8 +451,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Account\\AddFunds.cshtml",
               "ViewState": "AgIAAD0AAAAAAAAAAAAiwGQAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:57:14.571Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:57:14.571Z"
             },
             {
               "$type": "Document",
@@ -486,8 +463,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Account\\ChangePassword.cshtml",
               "ViewState": "AgIAAB0AAAAAAAAAAAAiwEQAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:56:51.259Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:56:51.259Z"
             },
             {
               "$type": "Document",
@@ -499,8 +475,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Account\\Profile.cshtml",
               "ViewState": "AgIAAEIAAAAAAAAAAAAiwGkAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-10T05:30:28.721Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-10T05:30:28.721Z"
             },
             {
               "$type": "Document",
@@ -512,8 +487,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Account\\Register.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACcBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-09T09:06:04.696Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T09:06:04.696Z"
             },
             {
               "$type": "Document",
@@ -525,8 +499,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAE4BAAAAAAAAAAAiwIEBAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-07T07:26:12.298Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:26:12.298Z"
             },
             {
               "$type": "Document",
@@ -538,8 +511,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Account\\Login.cshtml",
               "ViewState": "AgIAALAAAAAAAAAAAAAiwN0AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-09T09:05:42.111Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-09T09:05:42.111Z"
             },
             {
               "$type": "Document",
@@ -551,8 +523,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\Home\\HowItWorks.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-07T07:28:42.825Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:28:42.825Z"
             },
             {
               "$type": "Document",
@@ -564,8 +535,7 @@
               "RelativeToolTip": "CarSharingWebsite\\Views\\_ViewImports.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-07T07:32:55.271Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-07T07:32:55.271Z"
             }
           ]
         }
